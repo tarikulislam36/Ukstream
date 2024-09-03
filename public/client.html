@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="./output.css" rel="stylesheet">
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+</head>
+<body>
+    
+
+    <!-- CheckUrl -->
+   <!-- Leave button top right side -->
+<button id="LeaveBtn" class="bg-red-400 absolute right-16 w-20 h-10 text-white" onclick="window.history.back()">Leave</button>
+   
+
+       
+        <button id="endStreamBtn" class="hidden">End Stream</button>
+
+        <!-- Calling Part -->
+        
+
+        <input type="text" name="localpeerId" id="localpeerId" readonly style="width: 90%;" class="hidden">
+        <br>
+        <br>
+        <video id="localVideo" muted autoplay playsinline style="max-width: 300px;" class="hidden"></video>
+        <div class="flex justify-center items-center h-screen">
+            <div class="video-container">
+                <video id="remoteVideo" autoplay playsinline class="h-full"></video>
+            </div>
+        </div>
+        <div class="hidden">
+            <label for="remotePeerId">Remote Peer ID:</label>
+            <input type="text" id="remotePeerId">
+           
+        </div>
+    
+    
+       
+        <script>
+          
+// handle the call
+
+
+    
+        </script>
+ 
+<!-- Script -->
+ <!-- <script>
+    socket.on('redirect', (url) => {
+    window.location.href = url;
+}); -->
+ 
+    <!-- ScriptsLink -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Platform</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link href="./output.css" rel="stylesheet">
+
+    <style>
+
+
+
+/* das */
+.container {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+/* label {
+  display: block;
+  margin-bottom: 5px;
+} */
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+input[type="text"] {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 450px;
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  background-color: #f0f8ff;
+  border: 1px solid #ccc;
+  color: #007bff;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #e0e8ff;
+}
+
+.icon {
+  height: 16px;
+  width: 16px;
+  margin-right: 5px;
+  color: #007bff;
+}
+
+    </style>
+</head>
+<body>
+
+    <body class="bg-gray-100">
+
+ 
+        <!-- Header -->
+        <div class="flex justify-between items-center py-4 bg-slate-100 px-10 absolute w-full ">
+            <div class="text-lg font-semibold ">My videos</div>
+            <button class="bg-blue-500 text-white py-2 px-4 rounded" id="createStreamBtn">CREATE EVENT</button>
+        </div>
+
+   
+           
+           
+        <div class="flex justify-center items-center h-screen bg-white">
+            <p class="text-gray-500 text-lg " id="createText">Press “Create event” to start</p>
+
+            <label for="linkInput" class="relative bottom-12 left-20 hidden" id="copyLinkText">Copy link</label>
+         
+              <input type="text"  id="streamLink" readonly class="w-3/4 hidden">
+              <button id="copyButton" class="hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4M8 7h8M8 7v14a1 1 0 001 1h6a1 1 0 001-1V7H8z" />
+                </svg><span>COPY</span>
+              </button>
+            </div>
+       
+          </div>
+           
+    </div>
+
+    <script>
+        document.getElementById('copyButton').addEventListener('click', function() {
+  var copyText = document.getElementById('streamLink');
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+  
+  navigator.clipboard.writeText(copyText.value).then(function() {
+    alert('Link copied to clipboard!');
+  }, function(err) {
+    console.error('Could not copy text: ', err);
+  });
+});
+
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
