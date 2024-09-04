@@ -22,12 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.error) {
             streamLinkElement.textContent = data.error;
         } else {
-            streamLinkElement.value = `http://localhost:3000/stream.html?streamid=${data.streamToken}`;
-
-            createText.style.display = "none";
-            copyLinkText.style.display = "block";
-            inputcpy.style.display = "block";
-            copyButton.style.display = "block";
+            // Redirect to client page with the stream token
+            window.location.href = `/client.html?streamid=${data.streamToken}`;
+           
+           
         }
     });
 

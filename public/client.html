@@ -7,14 +7,109 @@
     <link rel="stylesheet" href="styles.css">
     <link href="./output.css" rel="stylesheet">
     <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <style>
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            top: -42vh;
+            
+            text-align: center;
+        }
+
+        .loading-text {
+            font-size: 30px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dots div {
+            width: 8px;
+            height: 8px;
+            margin: 0 4px;
+            background-color: #888;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .dots div:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dots div:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
 <body>
-    
+    <body class="bg-gray-100">
+      
+        <!-- Header -->
+        <div class="flex justify-between items-center py-4 bg-slate-100 px-10 absolute w-full ">
+            <div class="text-lg font-semibold ">My videos</div>
+            <button class="bg-blue-500 text-white py-2 px-4 rounded" id="createStreamBtn">CREATE EVENT</button>
+        </div>
+
+
+        <!-- Copy Page -->
+        <div class="container"> 
+        <div class="flex justify-center items-center h-screen bg-white">
+            
+            <video id="remoteVideo" autoplay playsinline class="h-full w-full hidden"></video>
+
+            <label for="linkInput" class="relative bottom-12 left-20 " id="copyLinkText">Copy link</label>
+         
+              <input type="text"  id="streamLink" readonly class=" h-16 p-2 " style="width: 35rem;">
+              <button id="copyButton" class="px-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4M8 7h8M8 7v14a1 1 0 001 1h6a1 1 0 001-1V7H8z" />
+                </svg><span>COPY</span>
+              </button>
+            </div>
+            <div id="onLOADIcon"> 
+                
+           
+       
+<div class="loading-container" id="Waiting5">
+    <div class="loading-text">Waiting for stream</div>
+    <div class="dots">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+</div>
+          </div>
+           
+    </div>
+</div>
 
     <!-- CheckUrl -->
    <!-- Leave button top right side -->
-<button id="LeaveBtn" class="bg-red-400 absolute right-16 w-20 h-10 text-white" onclick="window.history.back()">Leave</button>
-   
+
+
+<!--    
+<button id="LeaveBtn" class="bg-red-400 absolute right-16 w-20 h-10 text-white" onclick="window.history.back()">Leave</button> -->
+   <div class="hidden">
 
        
         <button id="endStreamBtn" class="hidden">End Stream</button>
@@ -23,12 +118,11 @@
         
 
         <input type="text" name="localpeerId" id="localpeerId" readonly style="width: 90%;" class="hidden">
-        <br>
-        <br>
+      
         <video id="localVideo" muted autoplay playsinline style="max-width: 300px;" class="hidden"></video>
         <div class="flex justify-center items-center h-screen">
             <div class="video-container">
-                <video id="remoteVideo" autoplay playsinline class="h-full"></video>
+               
             </div>
         </div>
         <div class="hidden">
@@ -37,7 +131,7 @@
            
         </div>
     
-    
+    </div>
        
         <script>
           
@@ -53,6 +147,28 @@
     window.location.href = url;
 }); -->
  
+
+
+<script>
+ let url5 = new URL(window.location.href);
+ Uid5 = url5.searchParams.get('streamid'); 
+ const streamLinkElement2 = document.getElementById('streamLink');
+ streamLinkElement2.value = `https://206.189.55.27:443/stream.html?streamid=${Uid5}`;
+
+
+document.getElementById('copyButton').addEventListener('click', function() {
+  var copyText = document.getElementById('streamLink');
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+  
+  navigator.clipboard.writeText(copyText.value).then(function() {
+    alert('Link copied to clipboard!');
+  }, function(err) {
+    console.error('Could not copy text: ', err);
+  });
+});
+
+</script>
     <!-- ScriptsLink -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>

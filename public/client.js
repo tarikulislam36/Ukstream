@@ -58,11 +58,19 @@ const remotePeerIdInput = document.getElementById('remotePeerId');
 
 const inputlocalpeerId = document.getElementById("localpeerId");
 
+
+
+const StreamV = document.getElementById('remoteVideo');
+   const  copyLinkText = document.getElementById('copyLinkText');
+   const inputcpy = document.getElementById('streamLink');
+   const copyButton = document.getElementById('copyButton');
+   const onLOADIcon = document.getElementById('onLOADIcon');
+
 const peer = new Peer();
 
 peer.on('open', (id) => {
     console.log('My peer ID is: ' + id);
-    inputlocalpeerId.value = id;
+    // inputlocalpeerId.value = id;
     let peerId = id;
     const UserType = "Client";
     socket.emit('join', token, peerId, UserType);
@@ -74,7 +82,7 @@ peer.on('error', (error) => {
 
 const getUserMedia = navigator.mediaDevices.getUserMedia;
 
-getUserMedia({ video: true, audio: true }).then((stream) => {
+getUserMedia({ video: false, audio: true }).then((stream) => {
     // Show local video
     localVideo.srcObject = stream;
 
@@ -82,8 +90,13 @@ getUserMedia({ video: true, audio: true }).then((stream) => {
         call.answer(stream); // Answer the call with an A/V stream.
         call.on('stream', (remoteStream) => {
             // Show remote video
-            
+             StreamV.style.display = "block";
+            copyLinkText.style.display = "none";
+            inputcpy.style.display = "none";
+            copyButton.style.display = "none";
+            onLOADIcon.style.display = "none";
             remoteVideo.srcObject = remoteStream;
+
         });
     });
 }).catch((err) => {

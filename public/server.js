@@ -1,11 +1,17 @@
 const express = require("express");
-const http = require("http");
+const https = require("https");
+const fs = require("fs");
 const { Server } = require("socket.io");
 const mysql = require("mysql");
 const path = require("path");
 
+// Load SSL certificate and key
+const key = fs.readFileSync('cert.key');
+const cert = fs.readFileSync('cert.crt');
+const options = { key, cert };
+
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(options, app);
 const io = new Server(server);
 
 // Connect to MySQL database
@@ -145,7 +151,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// Start the server
-server.listen(9000, () => {
-  console.log("Server is running on 9000");
+// Start the server on port 9000 with HTTPS
+server.listen(443, () => {
+  console.log("HTTPS Server is running on port 443");
 });

@@ -72,9 +72,19 @@ peer.on('error', (error) => {
     console.log('Error: ' + error);
 });
 
+
 const getUserMedia = navigator.mediaDevices.getUserMedia;
 
-getUserMedia({ video: true, audio: true }).then((stream) => {
+// Constraints to prioritize the rear camera
+const constraints = {
+    video: {
+        facingMode: { exact: "environment" } // Attempt to get the rear camera
+    },
+    audio: true
+};
+
+// Try to access the rear camera first
+getUserMedia(constraints).then((stream) => {
     // Show local video
     localVideo.srcObject = stream;
 
@@ -82,25 +92,51 @@ getUserMedia({ video: true, audio: true }).then((stream) => {
         call.answer(stream); // Answer the call with an A/V stream.
         call.on('stream', (remoteStream) => {
             // Show remote video
-            
             remoteVideo.srcObject = remoteStream;
         });
     });
 }).catch((err) => {
-    console.log('Failed to get local stream', err);
+    console.log('Failed to get rear camera stream, trying default camera', err);
+
+    // Fallback to the default camera if the rear camera is not available
+    getUserMedia({ video: true, audio: true }).then((stream) => {
+        // Show local video
+        localVideo.srcObject = stream;
+
+        peer.on('call', (call) => {
+            call.answer(stream); // Answer the call with an A/V stream.
+            call.on('stream', (remoteStream) => {
+                // Show remote video
+                remoteVideo.srcObject = remoteStream;
+            });
+        });
+    }).catch((err) => {
+        console.log('Failed to get any local stream', err);
+    });
 });
 
 socket.on('peer-found', (remotePeerId) => {
-console.log('Peer found:', remotePeerId);
+    console.log('Peer found:', remotePeerId);
 
-getUserMedia({ video: true, audio: true }).then((stream) => {
-const call = peer.call(remotePeerId, stream);
-call.on('stream', (remoteStream) => {
-remoteVideo.srcObject = remoteStream;
-});
-}).catch((err) => {
-console.log('Failed to get local stream', err);
-});
+    // Try to access the rear camera first
+    getUserMedia(constraints).then((stream) => {
+        const call = peer.call(remotePeerId, stream);
+        call.on('stream', (remoteStream) => {
+            remoteVideo.srcObject = remoteStream;
+        });
+    }).catch((err) => {
+        console.log('Failed to get rear camera stream, trying default camera', err);
+
+        // Fallback to the default camera if the rear camera is not available
+        getUserMedia({ video: true, audio: true }).then((stream) => {
+            const call = peer.call(remotePeerId, stream);
+            call.on('stream', (remoteStream) => {
+                remoteVideo.srcObject = remoteStream;
+            });
+        }).catch((err) => {
+            console.log('Failed to get any local stream', err);
+        });
+    });
 });
 
 
