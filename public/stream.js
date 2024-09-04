@@ -64,7 +64,8 @@ peer.on('open', (id) => {
     console.log('My peer ID is: ' + id);
     inputlocalpeerId.value = id;
     let peerId = id;
-    socket.emit('join', token, peerId);
+    const UserType = "Streamer";
+    socket.emit('join', token, peerId, UserType);
 });
 
 peer.on('error', (error) => {

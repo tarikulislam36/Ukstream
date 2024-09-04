@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const path = require("path");
 
 const app = express();
@@ -12,7 +12,7 @@ const io = new Server(server);
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "U@new_password",
+  password: "password",
   database: "streaming_db",
 });
 
@@ -30,32 +30,33 @@ const peers = {};
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "/")));
 
-
 // Socket.IO connection handling
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
   // Handle peer connection
-  socket.on("join", (token, peerId) => {
-    console.log(`User with id ${peerId} joined with token ${token}`);
+  socket.on("join", (token, peerId, UserType) => {
+    console.log(`User with id ${peerId} joined with token ${token} as ${UserType}`);
 
-    // Store the token and peerId on the socket instance for later use
+    // Store the token, peerId, and UserType on the socket instance for later use
     socket.token = token;
     socket.peerId = peerId;
+    socket.UserType = UserType;
 
-    // Store the peer ID with the corresponding token
+    // Store the peer ID and UserType with the corresponding token
     if (!peers[token]) {
       peers[token] = [];
     }
-    peers[token].push(peerId);
+    peers[token].push({ peerId, UserType, socketId: socket.id });
 
-    // If there are two peers with the same token, connect them
-    if (peers[token].length > 1) {
-      const [peer1, peer2] = peers[token];
-      // Send the peer IDs to each other
-      io.to(socket.id).emit("peer-found", peer1);
-      // io.to(peers[token][1]).emit("peer-found", peer1);
-      console.log("User Found");
+    // Check if there's a client user and a streamer user with the same token
+    const clientPeer = peers[token].find(p => p.UserType === "Client");
+    const streamerPeer = peers[token].find(p => p.UserType === "Streamer");
+
+    if (clientPeer && streamerPeer) {
+      // Send the client peer ID to the streamer using the streamer's socket ID
+      io.to(streamerPeer.socketId).emit("peer-found", clientPeer.peerId);
+      console.log("Client peer ID sent to the streamer");
       console.log(peers);
     }
   });
@@ -126,11 +127,11 @@ io.on("connection", (socket) => {
     const peerId = socket.peerId;
 
     if (token && peerId && peers[token]) {
-      // Find the index of the peer ID to be removed
-      const index = peers[token].indexOf(peerId);
+      // Find the index of the peer object to be removed
+      const index = peers[token].findIndex(p => p.peerId === peerId);
 
       if (index !== -1) {
-        // Remove the peer ID using splice
+        // Remove the peer object using splice
         peers[token].splice(index, 1);
 
         // If there are no more peers for this token, delete the token entry
