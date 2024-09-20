@@ -152,6 +152,6 @@ io.on("connection", (socket) => {
 });
 
 // Start the server on port 9000 with HTTPS
-server.listen(443, () => {
+server.listen(9000, () => {
   console.log("HTTPS Server is running on port 443");
 });

@@ -66,7 +66,25 @@ const StreamV = document.getElementById('remoteVideo');
    const copyButton = document.getElementById('copyButton');
    const onLOADIcon = document.getElementById('onLOADIcon');
 
-const peer = new Peer();
+
+   const peerConfig = {
+    config: {
+        iceServers: [
+            {
+                urls:[
+                  'stun:stun.l.google.com:19302',
+                  'stun:stun1.l.google.com:19302'
+                ]
+            },
+          {
+                urls: 'turn:192.158.29.39:3478?transport=tcp',
+                username: '28224511:1379330808',
+                credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA='
+            }
+        ]
+    }
+};
+const peer = new Peer(undefined, peerConfig);
 
 peer.on('open', (id) => {
     console.log('My peer ID is: ' + id);

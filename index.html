@@ -3,19 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <link href="./output.css" rel="stylesheet">
+    <title>Streaming Platform</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-200">
-    <div class="container mx-auto">
-        <div class="flex justify-center items-center h-screen">
-            <div class="bg-white p-4 rounded-lg shadow-lg">
-                <a href="/dashboard.html" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Go Dashboard</a>
-            </div>
-            </div>
+<body>
+    <div class="container">
+        <h1>Streaming Platform</h1>
+        <div>
+            <h2>Create a Stream</h2>
+            <button id="createStreamBtn">Create Stream</button>
+            <p id="streamLink"></p>
+        </div>
+        <div>
+            <h2>Join a Stream</h2>
+            <input type="text" id="joinToken" placeholder="Enter stream token">
+            <button id="joinStreamBtn">Join Stream</button>
+            <p id="joinResponse"></p>
+        </div>
+        <div>
+            <h2>End a Stream</h2>
+            <input type="text" id="endToken" placeholder="Enter stream token">
+            <button id="endStreamBtn">End Stream</button>
+            <p id="endResponse"></p>
         </div>
     </div>
-    
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
