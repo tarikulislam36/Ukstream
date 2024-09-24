@@ -6,10 +6,66 @@
     <title>Stream</title>
     <link rel="stylesheet" href="styles.css">
     <link href="./output.css" rel="stylesheet">
-    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/6.1.4/adapter.js" integrity="sha512-r8cn1OoZ21KHc0zmav3+MtQS24AJLAaDdNNWYkOborAznLETtfBKMb6xkpqXnjcH1GmKG9BqPOW9tU/Jzy98kQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+
+
+.loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            top: -42vh;
+            
+            text-align: center;
+        }
+
+        .loading-text {
+            font-size: 30px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dots div {
+            width: 8px;
+            height: 8px;
+            margin: 0 4px;
+            background-color: #888;
+            border-radius: 50%;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .dots div:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dots div:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+    </style>
+
+
 </head>
 <body>
-    
+
 
     <!-- CheckUrl -->
    
@@ -19,16 +75,39 @@
         <button id="endStreamBtn"  class="bg-red-400 absolute right-16 w-32 h-10 text-white">End Stream</button>
 
         <!-- Calling Part -->
+     <div class="container mx-auto py-1">
        
-
-        <input type="text" name="localpeerId" id="localpeerId" readonly style="" class="hidden" >
-
-     <div class="flex justify-center items-center h-screen container">
+     <div class="flex justify-center items-center h-screen ">
         <video id="localVideo" muted autoplay playsinline class="w-full"></video>
 
+
+<div id="onLOADIcon" class="hidden"> 
+  
+   
+
+    <div class="loading-container" id="Waiting5">
+        <div class="loading-text">Please wait, the video is currently being processed </div>
+        <div class="dots">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    </div>
+
+
+    <div class=" hidden" id="Thanks">
+        <p class="font-semibold text-blue-500 bg-slate-100 shadow-sm">Thank you for joining! You can now close the tab.</p>
+    </div>
 </div>
 
 
+
+</div>
+    
+     
 
         <video id="remoteVideo" muted autoplay playsinline style="max-width: 300px;" class="hidden" ></video>
         <div>
@@ -59,3 +138,4 @@
     <script src="stream.js"></script>
 </body>
 </html>
+.

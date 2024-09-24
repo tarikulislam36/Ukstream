@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Videos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <div class="container mx-auto py-12">
+    <h1 class="text-3xl font-bold text-center mb-8">Available Videos</h1>
+    <div id="videoContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </div>
+
+  <script>
+    // Fetch the list of videos from the server
+    fetch('/videos')
+      .then(response => response.json())
+      .then(data => {
+        const videoContainer = document.getElementById('videoContainer');
+        data.videos.forEach(video => {
+          // Create video player and download button for each video
+          const videoElement = document.createElement('div');
+          videoElement.classList.add('bg-white', 'p-4', 'rounded', 'shadow-md', 'relative');
+
+          videoElement.innerHTML = `
+            <video controls class="w-full h-48 object-cover rounded">
+              <source src="/upload/${video}" type="video/webm">
+              Your browser does not support the video tag.
+            </video>
+            <a href="/upload/${video}" download="${video}" class="absolute top-2 right-2">
+              <svg class="w-8 h-8 text-gray-600 hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4 4m0 0l4-4m-4 4V4m8 16h4"></path>
+              </svg>
+            </a>
+          `;
+
+          videoContainer.appendChild(videoElement);
+        });
+      })
+      .catch(err => {
+        console.error('Error fetching videos:', err);
+      });
+  </script>
+</body>
+</html>

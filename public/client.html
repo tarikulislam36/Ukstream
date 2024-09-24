@@ -6,7 +6,8 @@
     <title>Stream</title>
     <link rel="stylesheet" href="styles.css">
     <link href="./output.css" rel="stylesheet">
-    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/6.1.4/adapter.js" integrity="sha512-r8cn1OoZ21KHc0zmav3+MtQS24AJLAaDdNNWYkOborAznLETtfBKMb6xkpqXnjcH1GmKG9BqPOW9tU/Jzy98kQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .loading-container {
             display: flex;
@@ -63,15 +64,21 @@
       
         <!-- Header -->
         <div class="flex justify-between items-center py-4 bg-slate-100 px-10 absolute w-full ">
-            <div class="text-lg font-semibold ">My videos</div>
+           <a href="/myvideo.html" class="text-lg font-semibold ">My videos</a>
+           
+            <div id="timerDisplay" class="text-blue-500">s</div>
             <button class="bg-blue-500 text-white py-2 px-4 rounded" id="createStreamBtn">CREATE EVENT</button>
         </div>
 
 
         <!-- Copy Page -->
         <div class="container"> 
+ 
+
         <div class="flex justify-center items-center h-screen bg-white">
-            
+            <video id="videoPlayer" class="h-full w-full hidden" controls>
+               
+            </video>
             <video id="remoteVideo" autoplay playsinline class="h-full w-full hidden"></video>
 
             <label for="linkInput" class="relative bottom-12 left-20 " id="copyLinkText">Copy link</label>
@@ -82,7 +89,11 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4M8 7h8M8 7v14a1 1 0 001 1h6a1 1 0 001-1V7H8z" />
                 </svg><span>COPY</span>
               </button>
-            </div>
+           
+                <button class="hidden" id="endDisplay" >
+                    <a href="/myvideo.html" class="text-2xl font-semibold text-blue-600 hover:text-white hover:bg-blue-600"> Go for Available Videos</a>
+                </button>
+            </div> 
             <div id="onLOADIcon"> 
                 
            
@@ -148,12 +159,11 @@
 }); -->
  
 
-
 <script>
  let url5 = new URL(window.location.href);
  Uid5 = url5.searchParams.get('streamid'); 
  const streamLinkElement2 = document.getElementById('streamLink');
- streamLinkElement2.value = `https://206.189.55.27:443/stream.html?streamid=${Uid5}`;
+ streamLinkElement2.value = `https://demo.nsmkr.world/stream.html?streamid=${Uid5}`;
 
 
 document.getElementById('copyButton').addEventListener('click', function() {
